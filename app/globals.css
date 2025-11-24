@@ -1,26 +1,256 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 1) FONT FILES  -------------------------------------------------- */
+/* Make sure these files exist in /public/fonts */
+@font-face {
+  font-family: "Jost";
+  src: url("/fonts/Jost-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: "Jost";
+  src: url("/fonts/Jost-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@font-face {
+  font-family: "Circe";
+  src: url("/fonts/Circe-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Circe";
+  src: url("/fonts/Circe-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2) THEME TOKENS (Tailwind v4 @theme) --------------------------- */
+@theme {
+  /* Fonts */
+  --font-primary: "Jost", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-secondary: "Circe", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
+  /* Font sizes */
+  --text-title: 2rem;        /* 32px – for main page titles */
+  --text-body: 1rem;         /* 16px – base paragraph */
+  --text-body-lg: 1.125rem;  /* 18px – larger paragraph */
+  --text-tag: 1rem;          /* 16px – tags / pill labels */
+
+  /* Colors (Dental palette) */
+  --color-primary: #202a2c;       /* main brand / text / header */
+  --color-secondary: #afc8c8;     /* soft teal secondary */
+  --color-primary-soft: #afc8c8;  /* background wash (same as secondary) */
+  --color-accent: #f97316;        /* CTA accent */
+  --color-surface: #ffffff;       /* cards / surfaces */
+  --color-muted: #64748b;         /* body text */
+  --color-border-subtle: #e2e8f0; /* subtle borders */
+
+  /* Spacing / layout */
+  --spacing-section-y: 5rem; /* py-section-y -> ~80px desktop */
+  --container-page: 72rem;   /* max-w-page -> ~1152px */
+
+  /* Buttons (height tokens) */
+  --spacing-btn-primary: 3rem;      /* 48px - h-btn-primary */
+  --spacing-btn-secondary: 1.875rem; /* 30px - h-btn-secondary */
+
+  /* Card radius & shadow */
+  --radius-card: 1.5rem;      /* rounded-card */
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08); /* shadow-soft */
+}
+
+/* 3) BASE STYLES -------------------------------------------------- */
+@layer base {
+  body {
+    @apply bg-white text-muted font-primary antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-secondary text-slate-900;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 4) CUSTOM UTILITIES: layout + typography + hero words ---------- */
+@layer utilities {
+  /* Central page container */
+  .page-container {
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Vertical section spacing */
+  .page-section {
+    @apply py-section-y;
+  }
+
+  /* Card layout similar to doctor/testimonial blocks */
+  .card-surface {
+    @apply rounded-card bg-surface shadow-soft border border-border-subtle;
+  }
+
+  /* Typography helpers */
+  .title-xl {
+    @apply text-title font-secondary font-bold;
+  }
+
+  .body-md {
+    @apply text-body text-muted;
+  }
+
+  .body-lg {
+    @apply text-body-lg text-muted;
+  }
+
+  .tag-text {
+    @apply text-tag font-medium tracking-wide uppercase text-primary;
+  }
+
+  /* Hero word styles */
+  .hero-word-filled {
+    color: #ffffff;
+  }
+
+  .hero-word-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px #ffffff;
+    text-stroke: 1px #ffffff;
+  }
+}
+
+/* Typing caret */
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.type-caret::after {
+  content: "|";
+  margin-left: 4px;
+  animation: caret-blink 1s infinite;
+}
+
+/* Floating + hero animations ------------------------------------- */
+@keyframes pill-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+  }
+  50% {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
+  }
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes hero-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .pill-floating {
+    animation: pill-float 3s ease-in-out infinite;
+  }
+
+  .hero-image-float {
+    animation: hero-float 4s ease-in-out infinite;
+  }
+
+  .hero-content-fade {
+    animation: hero-fade-up 0.7s ease-out both;
+  }
+}
+
+/* Button system + fill-hover animation --------------------------- */
+@layer utilities {
+  /* Base button */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full
+      font-medium text-sm transition duration-200
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary;
+  }
+
+  /* Sizes */
+  .btn-md {
+    @apply h-btn-primary px-6;      /* 48px height */
+  }
+
+  .btn-sm {
+    @apply h-btn-secondary px-4;    /* 30px height */
+  }
+
+  /* Variants */
+  .btn-primary {
+    @apply bg-primary text-white hover:brightness-110;
+  }
+
+  .btn-secondary {
+    @apply border border-primary text-primary hover:bg-primary/5;
+  }
+
+  .btn-ghost {
+    @apply text-primary hover:bg-primary/10;
+  }
+
+  /* Fill-on-hover animation */
+  .btn-fill {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.3s ease;
+  }
+
+  .btn-fill::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 120%;
+    height: 0%;
+    background: var(--color-primary);
+    transform: translateX(-50%);
+    border-radius: 50% 50% 0 0; /* curve like liquid rising */
+    transition: height 0.35s ease-out;
+    z-index: -1;
+  }
+
+  .btn-fill:hover::before {
+    height: 180%; /* fills upward + slightly outward */
+  }
+
+  .btn-fill:hover {
+    color: white !important;
+  }
+
+   /* Hide horizontal scrollbar for carousels */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
