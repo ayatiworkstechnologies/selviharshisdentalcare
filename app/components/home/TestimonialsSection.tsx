@@ -74,7 +74,6 @@ export function TestimonialsSection() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // AUTO-SLIDE FUNCTION
   const startAutoSlide = () => {
     if (!scrollRef.current) return;
 
@@ -87,15 +86,17 @@ export function TestimonialsSection() {
       container.scrollBy({ left: amount, behavior: "smooth" });
 
       // Reset to start when near end
-      if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 2) {
+      if (
+        container.scrollLeft + container.clientWidth >=
+        container.scrollWidth - 2
+      ) {
         setTimeout(() => {
           container.scrollTo({ left: 0, behavior: "smooth" });
         }, 800);
       }
-    }, 3500); // 3.5 sec per slide
+    }, 3500);
   };
 
-  // START AUTO-SLIDE ON MOUNT
   useEffect(() => {
     startAutoSlide();
 
@@ -104,7 +105,6 @@ export function TestimonialsSection() {
     };
   }, []);
 
-  // STOP AUTO-SLIDE ON USER INTERACTION
   const stopAutoSlide = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
   };
@@ -114,8 +114,10 @@ export function TestimonialsSection() {
       <div className="page-container">
         {/* Heading */}
         <div className="flex flex-col gap-2 mb-8">
-          <p className="tag-text">PATIENT TESTIMONIALS</p>
-          <h2 className="title-xl max-w-xl">
+          {/* tag = section label */}
+          <p className="tag">PATIENT TESTIMONIALS</p>
+          {/* title = main heading */}
+          <h2 className="title max-w-xl">
             Patient Experiences That Inspire Confidence
           </h2>
         </div>
@@ -138,9 +140,8 @@ export function TestimonialsSection() {
               <article
                 key={item.id}
                 className="
-                  snap-start bg-white card-surface
+                  snap-start card-surface
                   min-w-[280px] sm:min-w-[300px] md:min-w-[340px]
-                  rounded-2xl shadow-lg
                   px-6 py-6 flex flex-col justify-between
                 "
               >
@@ -151,29 +152,29 @@ export function TestimonialsSection() {
                       <FaStar key={idx} className="h-4 w-4 text-[#FDB022]" />
                     )
                   )}
-
-                  {/* Half star */}
                   {item.rating && item.rating % 1 !== 0 && (
                     <FaStar className="h-4 w-4 text-[#FDB022] opacity-50" />
                   )}
                 </div>
 
                 {/* Message */}
-                <p className="body-md text-slate-700 mb-5">“{item.message}”</p>
+                <p className="para mb-5">“{item.message}”</p>
 
                 {/* Avatar + name */}
                 <div className="mt-auto flex items-center gap-3">
-                  <div className="relative h-12 w-12 rounded-full shadow-lg overflow-hidden">
+                  <div className="relative h-12 w-12 rounded-full shadow-soft overflow-hidden">
                     <Image
                       src={item.avatar}
                       alt={item.name}
                       fill
-                      className="object-cover "
+                      className="object-cover"
                     />
                   </div>
 
-                  <div className="text-sm text-left">
-                    <p className="font-semibold text-slate-900">{item.name}</p>
+                  <div className="text-left">
+                    <p className="text-sm font-semibold text-slate-900">
+                      {item.name}
+                    </p>
                     {item.role && (
                       <p className="text-xs text-muted">{item.role}</p>
                     )}

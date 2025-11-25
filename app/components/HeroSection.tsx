@@ -22,7 +22,7 @@ export function HeroBanner({
   sideText = "Transforming\nSmiles with\nPrecision, Care",
   imageSrc,
   imageAlt,
-  bgClassName = "bg-[#9fb8b5]",
+  bgClassName = "bg-secondary",
   topRightIconSrc,
   topRightIconAlt = "icon",
 }: HeroBannerProps) {
@@ -42,10 +42,10 @@ export function HeroBanner({
 
   return (
     <section
-      className={`relative overflow-hidden ${bgClassName} pt-20 pb-10 md:pt-24 md:pb-16`}
+      className={`relative overflow-hidden ${bgClassName} -mt-20 pt-20 pb-10 md:pt-24 md:pb-16`}
     >
       {/* ========== TOP-LEFT TEXT (DESKTOP) ========== */}
-      <div className="absolute left-25 top-6 z-20 hidden md:block max-w-xs">
+      <div className="absolute left-25 top-10 z-20 hidden md:block max-w-xs">
         <motion.p
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
@@ -62,9 +62,9 @@ export function HeroBanner({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="absolute right-25 top-6 z-20 hidden md:block"
+          className="absolute right-25 top-10 z-20 hidden md:block"
         >
-          <div className="relative h-12 w-12 opacity-90">
+          <div className="relative h-15 w-15 ">
             <Image
               src={topRightIconSrc}
               alt={topRightIconAlt}
@@ -87,9 +87,9 @@ export function HeroBanner({
     absolute z-10
     sm:top-1/2 lg:top:90 
     w-full text-center
-    text-[12vw]          /* MOBILE - smaller */
-    sm:text-[10vw]       /* SMALL SCREENS */
-    md:text-[7vw]        /* DESKTOP */
+    text-[12vw]         
+    sm:text-[10vw]       
+    md:text-[7vw]        
     font-secondary font-extrabold uppercase 
     tracking-[0.18em] leading-none
   "

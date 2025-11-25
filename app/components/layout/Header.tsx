@@ -20,12 +20,17 @@ const services = [
 export function Header() {
   const pathname = usePathname();
 
+  // dropdown
   const [open, setOpen] = useState(false);
   const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // mobile
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+
+  // transparent on scroll
+  const [scrolled, setScrolled] = useState(false);
 
   const isServicesActive = pathname.startsWith("/services");
 
@@ -53,6 +58,7 @@ export function Header() {
     closeTimer.current = setTimeout(() => setOpen(false), 200);
   };
 
+  // click outside close
   useEffect(() => {
     if (!open) return;
     const close = () => setOpen(false);
@@ -60,14 +66,30 @@ export function Header() {
     return () => document.removeEventListener("click", close);
   }, [open]);
 
+  // SCROLL HANDLER — transparent header on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="w-full pt-4 bg-[#9fb8b5]">
+    <header
+      className={`
+        w-full pt-4 sticky top-0 z-40
+        transition-all duration-300
+        ${scrolled ? "bg-transparent" : ""}
+      `}
+    >
       <div className="page-container">
-        {/* TOP BAR: logo + desktop nav + mobile hamburger */}
         <nav
           className="
             relative flex items-center justify-between
-            rounded-full bg-white px-4 sm:px-6 lg:px-8 py-3 shadow-soft
+            rounded-full bg-white shadow-soft
+            px-4 sm:px-6 lg:px-8 py-3
             max-w-[500px] mx-auto w-full
           "
         >
@@ -82,51 +104,61 @@ export function Header() {
           </Link>
 
           {/* DESKTOP MENU */}
-          <div className="hidden md:flex items-center gap-4 text-sm font-primary text-black">
-            <Link href="/" className={pathname === "/" ? pillActive : pillIdle}>
+          <div className="hidden md:flex items-center gap-4 text-black">
+            <Link
+              href="/"
+              className={`${pathname === "/" ? pillActive : pillIdle} ${
+                pathname === "/" ? "header-text-active" : "header-text"
+              }`}
+            >
               Home
             </Link>
 
             <Link
               href="/about"
-              className={pathname === "/about" ? pillActive : pillIdle}
+              className={`${pathname === "/about" ? pillActive : pillIdle} ${
+                pathname === "/about" ? "header-text-active" : "header-text"
+              }`}
             >
               About
             </Link>
 
-            {/* SERVICES DROPDOWN */}
+            {/* SERVICES */}
             <div
               className="relative"
               onMouseEnter={handleAreaEnter}
               onMouseLeave={handleAreaLeave}
             >
               <button
-                type="button"
                 onMouseDown={handleMouseDown}
                 onMouseUp={handleMouseUp}
                 onTouchStart={handleMouseDown}
                 onTouchEnd={handleMouseUp}
-                className={open || isServicesActive ? pillActive : pillIdle}
+                className={`${open || isServicesActive ? pillActive : pillIdle} ${
+                  open || isServicesActive ? "header-text-active" : "header-text"
+                }`}
               >
-                <span>Services</span>
+                Services
               </button>
 
               <div
-                className={`absolute left-1/2 top-full mt-6 w-64 -translate-x-1/2 transition-all duration-300 z-30 ${
-                  open
-                    ? "opacity-100 scale-100 pointer-events-auto"
-                    : "opacity-0 scale-95 pointer-events-none"
-                }`}
+                className={`absolute left-1/2 top-full mt-6 w-64 -translate-x-1/2 transition-all duration-300 z-30
+                  ${
+                    open
+                      ? "opacity-100 scale-100 pointer-events-auto"
+                      : "opacity-0 scale-95 pointer-events-none"
+                  }
+                `}
                 onMouseEnter={handleAreaEnter}
                 onMouseLeave={handleAreaLeave}
               >
                 <div className="overflow-hidden rounded-xl bg-white shadow-2xl">
-                  <ul className="max-h-[320px] overflow-y-auto text-sm font-primary text-black">
+                  <ul className="max-h-80 overflow-y-auto text-sm font-primary text-black">
                     {services.map((service) => {
                       const slug = service.toLowerCase().replace(/ /g, "-");
                       return (
-                        <Link href={`/services/${slug}`} key={slug}>
-                          <li className="px-4 py-2.5 cursor-pointer hover:bg-[#AFC8C8] hover:text-white transition">
+                        <Link key={slug} href={`/services/${slug}`}>
+                          <li className="px-4 py-2.5 hover:bg-[#AFC8C8] hover:text-white transition cursor-pointer">
                             {service}
                           </li>
                         </Link>
@@ -139,33 +171,31 @@ export function Header() {
 
             <Link
               href="/contact"
-              className={pathname === "/contact" ? pillActive : pillIdle}
+              className={`${pathname === "/contact" ? pillActive : pillIdle} ${
+                pathname === "/contact" ? "header-text-active" : "header-text"
+              }`}
             >
               Contact
             </Link>
           </div>
 
-          {/* MOBILE HAMBURGER */}
+          {/* MOBILE BUTTON */}
           <button
-            type="button"
-            className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-full bg-[#111111] text-white"
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            aria-label="Toggle menu"
+            className="md:hidden h-9 w-9 rounded-full bg-[#111111] text-white flex items-center justify-center"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <span className="text-lg">{mobileMenuOpen ? "✕" : "☰"}</span>
+            {mobileMenuOpen ? "✕" : "☰"}
           </button>
         </nav>
 
-        {/* MOBILE MENU PANEL */}
+        {/* MOBILE MENU */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-3 rounded-3xl bg-white shadow-soft px-4 py-4 text-sm font-primary text-black max-w-[500px] mx-auto">
+          <div className="md:hidden mt-3 rounded-3xl bg-white shadow-soft px-4 py-4 text-black max-w-[500px] mx-auto">
             <div className="flex flex-col gap-2">
               <Link
                 href="/"
                 className={`px-3 py-2 rounded-full ${
-                  pathname === "/"
-                    ? "bg-[#111111] text-white"
-                    : "hover:bg-[#111111] hover:text-white"
+                  pathname === "/" ? "bg-[#111111] text-white" : "hover:bg-[#111111] hover:text-white"
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -175,9 +205,7 @@ export function Header() {
               <Link
                 href="/about"
                 className={`px-3 py-2 rounded-full ${
-                  pathname === "/about"
-                    ? "bg-[#111111] text-white"
-                    : "hover:bg-[#111111] hover:text-white"
+                  pathname === "/about" ? "bg-[#111111] text-white" : "hover:bg-[#111111] hover:text-white"
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -185,39 +213,24 @@ export function Header() {
               </Link>
 
               <button
-                type="button"
                 className={`flex items-center justify-between px-3 py-2 rounded-full ${
-                  isServicesActive || mobileServicesOpen
-                    ? "bg-[#111111] text-white"
-                    : "hover:bg-[#111111] hover:text-white"
+                  mobileServicesOpen ? "bg-[#111111] text-white" : "hover:bg-[#111111] hover:text-white"
                 }`}
-                onClick={() => setMobileServicesOpen((prev) => !prev)}
+                onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
               >
-                <span>Services</span>
-                <span
-                  className={`transition-transform ${
-                    mobileServicesOpen ? "rotate-180" : ""
-                  }`}
-                >
-                  ▾
-                </span>
+                Services
+                <span className={`transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`}>▾</span>
               </button>
 
               {mobileServicesOpen && (
                 <div className="mt-2 ml-3 flex flex-col gap-1">
                   {services.map((service) => {
                     const slug = service.toLowerCase().replace(/ /g, "-");
-                    const href = `/services/${slug}`;
-                    const active = pathname === href;
                     return (
                       <Link
                         key={slug}
-                        href={href}
-                        className={`px-3 py-2 rounded-xl text-xs ${
-                          active
-                            ? "bg-[#AFC8C8] text-white"
-                            : "bg-slate-50 hover:bg-[#AFC8C8] hover:text-white"
-                        }`}
+                        href={`/services/${slug}`}
+                        className="px-3 py-2 rounded-xl text-xs bg-slate-50 hover:bg-[#AFC8C8] hover:text-white"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {service}
@@ -230,9 +243,7 @@ export function Header() {
               <Link
                 href="/contact"
                 className={`px-3 py-2 rounded-full ${
-                  pathname === "/contact"
-                    ? "bg-[#111111] text-white"
-                    : "hover:bg-[#111111] hover:text-white"
+                  pathname === "/contact" ? "bg-[#111111] text-white" : "hover:bg-[#111111] hover:text-white"
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >

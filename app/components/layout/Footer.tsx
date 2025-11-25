@@ -8,15 +8,15 @@ export function Footer() {
   return (
     <footer className="w-full">
       {/* Top Navigation Strip */}
-      <div className="bg-[#9fb8b5]">
-        <div
+      <div className="bg-secondary">
+        <nav
+          aria-label="Footer navigation"
           className="
             page-container
             flex flex-wrap items-center justify-center
             gap-6 sm:gap-10
             py-3
-            text-xs sm:text-sm md:text-base
-            font-primary text-white
+            font-primary text-white text-base sm:text-sm md:text-lg
           "
         >
           <Link href="/" className="hover:underline">
@@ -31,12 +31,12 @@ export function Footer() {
           <Link href="/contact" className="hover:underline">
             Contact
           </Link>
-        </div>
+        </nav>
       </div>
 
       {/* Bottom copyright bar */}
       <div className="bg-white">
-        <div className="page-container py-4 text-center font-primary">
+        <div className="page-container py-2 text-center font-primary">
           <p
             className="
               flex flex-wrap items-center justify-center
@@ -46,19 +46,26 @@ export function Footer() {
             "
           >
             <span>
-              Copyright ©2025 selviharshisdentalcare · All rights reserved |
+              © 2025 Selviharshi&apos;s Dental Care · All rights reserved |
               Designed &amp; Developed by
             </span>
 
-            {/* IN-LINE AYATIWORKS LOGO */}
-            <Link href="https://ayatiworks.com" target="_blank">
+            {/* In-line Ayatiworks logo */}
+            <Link
+              href="https://ayatiwors.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center"
+            >
               <Image
                 src="/web_logo.png"
                 alt="Ayatiworks Logo"
-                width={50}
-                height={80}
-                className="inline-block ml-1 object-contain"
-                style={{ filter: "invert(1)" }}
+                width={60}
+                height={18}
+                className="
+      inline-block ml-1 object-contain align-middle
+      brightness-0 invert-[0.15]
+    "
               />
             </Link>
           </p>

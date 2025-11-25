@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 export type ServiceItem = {
   id: string;
@@ -28,33 +29,50 @@ export function ServicesSection({ services }: { services: ServiceItem[] }) {
   };
 
   return (
-    <section className="page-section">
+    <section className="py-10">
       <div className="page-container">
         {/* Top heading + arrows */}
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-6">
           <div>
-            <p className="tag-text mb-1">Our Services</p>
-            <h2 className="title-xl">
+            {/* use .tag + .title utilities */}
+            <p className="tag mb-1">Our Services</p>
+            <h2 className="title">
               Expert solutions for lasting oral wellness
             </h2>
           </div>
 
+          {/* Desktop arrows */}
           <div className="hidden md:flex items-center gap-3">
             <button
               type="button"
               onClick={() => scroll("left")}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-primary hover:bg-primary hover:text-white shadow-soft transition"
+              className="
+      h-12 w-12 rounded-full
+      bg-white text-primary
+      shadow-xl
+      flex items-center justify-center
+      transition-all duration-300
+      hover:bg-primary hover:text-white
+    "
               aria-label="Previous services"
             >
-              <FaArrowLeft className="h-3 w-3" />
+              <FaAngleLeft className="h-7 w-7" />
             </button>
+
             <button
               type="button"
               onClick={() => scroll("right")}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-primary hover:bg-primary hover:text-white shadow-soft transition"
+              className="
+      h-12 w-12 rounded-full
+      bg-white text-primary
+      shadow-xl
+      flex items-center justify-center
+      transition-all duration-300
+      hover:bg-primary hover:text-white
+    "
               aria-label="Next services"
             >
-              <FaArrowRight className="h-3 w-3" />
+              <FaAngleRight className="h-7 w-7" />
             </button>
           </div>
         </div>
@@ -66,24 +84,39 @@ export function ServicesSection({ services }: { services: ServiceItem[] }) {
             <button
               type="button"
               onClick={() => scroll("left")}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-primary bg-white text-primary hover:bg-primary hover:text-white shadow-soft transition"
+              className="
+      h-10 w-10 rounded-full
+      bg-white text-primary
+      shadow-xl
+      flex items-center justify-center
+      transition-all duration-300
+      hover:bg-primary hover:text-white
+    "
               aria-label="Previous services"
             >
-              <FaArrowLeft className="h-3 w-3" />
+              <FaAngleLeft className="h-5 w-5" />
             </button>
+
             <button
               type="button"
               onClick={() => scroll("right")}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-primary bg-white text-primary hover:bg-primary hover:text-white shadow-soft transition"
+              className="
+      h-10 w-10 rounded-full
+      bg-white text-primary
+      shadow-xl
+      flex items-center justify-center
+      transition-all duration-300
+      hover:bg-primary hover:text-white
+    "
               aria-label="Next services"
             >
-              <FaArrowRight className="h-3 w-3" />
+              <FaAngleRight className="h-5 w-5" />
             </button>
           </div>
 
           <div
             ref={scrollRef}
-            className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-none pb-2 snap-x"
+            className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-none pb-6 "
           >
             {services.map((service) => {
               const href = `/services/${service.id}`;
@@ -96,7 +129,7 @@ export function ServicesSection({ services }: { services: ServiceItem[] }) {
                   key={service.id}
                   className="group snap-start min-w-[260px] sm:min-w-[280px] md:min-w-[320px] lg:min-w-[340px]
                     card-surface overflow-hidden flex flex-col transition-transform duration-300
-                    hover:-translate-y-2 hover:shadow-xl bg-surface"
+                    hover:-translate-y-2 hover:shadow-xl"
                 >
                   {/* Top image */}
                   <div className="relative h-48 sm:h-56 overflow-hidden">
@@ -108,7 +141,7 @@ export function ServicesSection({ services }: { services: ServiceItem[] }) {
                     />
                   </div>
 
-                  {/* Text + icon (icon sits on top edge of card) */}
+                  {/* Text + icon */}
                   <div className="relative px-6 pb-6 pt-10 flex flex-col gap-2 text-left">
                     {/* circle icon */}
                     <div className="absolute -top-6 left-6">
@@ -131,11 +164,14 @@ export function ServicesSection({ services }: { services: ServiceItem[] }) {
                     <h3 className="text-base font-semibold text-slate-900">
                       {service.title}
                     </h3>
-                    <p className="body-md">{service.description}</p>
 
+                    {/* use .para for body text */}
+                    <p className="para">{service.description}</p>
+
+                    {/* use btn system for CTA */}
                     <Link
                       href={href}
-                      className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-primary group/link"
+                      className="btn btn-sm btn-ghost mt-3 inline-flex items-center gap-2 group/link"
                     >
                       Know More
                       <span className="inline-block transition-transform duration-300 group-hover/link:translate-x-1">

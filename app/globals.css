@@ -37,10 +37,8 @@
 /* 2) THEME TOKENS (Tailwind v4 @theme) --------------------------- */
 @theme {
   /* Fonts */
-  --font-primary: "Jost", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  --font-secondary: "Circe", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+  --font-primary: "Jost" ;
+  --font-secondary: "Circe";
 
   /* Font sizes */
   --text-title: 2rem;        /* 32px – for main page titles */
@@ -48,10 +46,11 @@
   --text-body-lg: 1.125rem;  /* 18px – larger paragraph */
   --text-tag: 1rem;          /* 16px – tags / pill labels */
 
-  /* Colors (Dental palette) */
+  /* Colors (Dental palette) */ 
   --color-primary: #202a2c;       /* main brand / text / header */
-  --color-secondary: #afc8c8;     /* soft teal secondary */
-  --color-primary-soft: #afc8c8;  /* background wash (same as secondary) */
+  --color-secondary: #afc8c8; 
+  --color-third : #eeeeee;    /* soft teal secondary */
+  --color-primary-soft: #EEEEEE;  /* background wash (same as secondary) */
   --color-accent: #f97316;        /* CTA accent */
   --color-surface: #ffffff;       /* cards / surfaces */
   --color-muted: #64748b;         /* body text */
@@ -73,15 +72,9 @@
 /* 3) BASE STYLES -------------------------------------------------- */
 @layer base {
   body {
-    @apply bg-white text-muted font-primary antialiased;
+    @apply bg-white font-primary antialiased;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply font-secondary text-slate-900;
-  }
 }
 
 /* 4) CUSTOM UTILITIES: layout + typography + hero words ---------- */
@@ -96,39 +89,60 @@
     @apply py-section-y;
   }
 
-  /* Card layout similar to doctor/testimonial blocks */
+  /* Card surface */
   .card-surface {
     @apply rounded-card bg-surface shadow-soft border border-border-subtle;
   }
 
-  /* Typography helpers */
-  .title-xl {
-    @apply text-title font-secondary font-bold;
+  /* ============================
+     TYPOGRAPHY SYSTEM (GLOBAL)
+     ============================ */
+
+  /* TITLE (Responsive) */
+  .title {
+    @apply font-secondary font-bold text-slate-900 leading-tight
+           text-[24px]
+           sm:text-[28px]
+           lg:text-[32px];
   }
 
-  .body-md {
-    @apply text-body text-muted;
+  /* PARAGRAPH (Responsive) */
+  .para {
+    @apply font-primary text-black/90 leading-relaxed
+           text-[14px]
+           sm:text-[16px]
+           lg:text-[18px];
   }
 
-  .body-lg {
-    @apply text-body-lg text-muted;
+  /* TAG (Responsive) */
+  .tag {
+    @apply font-primary font-medium uppercase tracking-wide text-primary
+           text-[14px]
+           sm:text-[15px]
+           lg:text-[16px];
   }
 
-  .tag-text {
-    @apply text-tag font-medium tracking-wide uppercase text-primary;
+  /* HEADER TEXT */
+  .header-text {
+    @apply text-lg font-primary font-medium;
   }
 
-  /* Hero word styles */
+  .header-text-active {
+    @apply text-lg font-primary font-semibold;
+  }
+
+  /* Hero text styles */
   .hero-word-filled {
     color: #ffffff;
   }
 
   .hero-word-outline {
     color: transparent;
-    -webkit-text-stroke: 1px #ffffff;
-    text-stroke: 1px #ffffff;
+    -webkit-text-stroke: 1px #fff;
+    text-stroke: 1px #fff;
   }
 }
+
 
 /* Typing caret */
 @keyframes caret-blink {

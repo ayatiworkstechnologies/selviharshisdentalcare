@@ -14,7 +14,7 @@ export default function HomePage() {
         titleWord="AESTHETICS"
         imageSrc="/banner/hero-banner-1.png"
         imageAlt="Smiling dentist with tools"
-        bgClassName="bg-[#9fb8b5]"
+        bgClassName="bg-secondary"
         centerRange={[3, 6]} // fill E–T–H (indexes 3,4,5)
         sideText={"Transforming\nSmiles with\nPrecision, Care"}
         topRightIconSrc="/logo.svg"

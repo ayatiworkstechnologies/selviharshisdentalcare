@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+
 import { useRef } from "react";
+import { motion } from "framer-motion";
 
 type Doctor = {
   id: string;
@@ -19,13 +21,32 @@ const doctors: Doctor[] = [
     name: "Dr. Sai",
     role: "Senior Dentist & Implant Specialist",
     image: "/assets/Profile.jpg",
-    experience: "Over 10+ years of clinical experience in advanced dentistry and dental implants.",
+    experience:
+      "Over 10+ years of clinical experience in advanced dentistry and dental implants.",
     bio: [
       "Dr. Sai is an experienced dental professional known for delivering precise, patient-focused care. With expertise in implants, cosmetic dentistry, and full-mouth rehabilitation, he ensures every patient receives the right solution.",
       "His approach combines advanced technology with gentle treatment methods for comfortable, predictable results. Dedicated to excellence, he believes in creating healthy, confident smiles that last a lifetime.",
     ],
   },
 ];
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, x: 40 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 },
+  },
+};
 
 export default function DoctorSection() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -41,49 +62,67 @@ export default function DoctorSection() {
   };
 
   return (
-    <section className="page-section">
+    <motion.section
+      className="page-section"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={sectionVariants}
+    >
       {/* Heading */}
       <div className="page-container text-center mb-10">
-        <p className="tag-text">DOCTORS</p>
-        <h2 className="title-xl mt-1">Expert Dental Care You Can Trust</h2>
+        <p className="tag">DOCTORS</p>
+        <h2 className="title mt-1">Expert Dental Care You Can Trust</h2>
       </div>
 
       <div className="relative page-container">
         {/* LEFT desktop arrow */}
         <button
           onClick={() => scroll("left")}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 h-10 w-10 hidden md:flex items-center justify-center
-          bg-white rounded-full shadow-soft hover:bg-primary hover:text-white transition"
+          aria-label="Previous doctor"
+          className="
+    hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20
+    h-12 w-12 rounded-full
+    bg-white text-primary 
+    shadow-xl
+    items-center justify-center
+    transition-all duration-300
+    hover:bg-primary hover:text-white
+  "
         >
-          <FaArrowLeft />
+          <FaAngleLeft className="h-7 w-7" />
         </button>
 
         {/* Slider */}
-        <div
+        <motion.div
           ref={scrollRef}
-          className="flex overflow-x-auto scroll-smooth gap-8 px-4 md:px-0 pb-6 snap-x scrollbar-none 
-          justify-center md:justify-start"
+          variants={cardVariants}
+          className="flex overflow-x-auto scroll-smooth gap-8 px-2 pb-6 snap-x scrollbar-none 
+                     justify-center md:justify-start"
         >
           {doctors.map((doc) => (
             <div
               key={doc.id}
               className="snap-center bg-white shadow-soft rounded-2xl overflow-hidden 
-              min-w-[90%] sm:min-w-[80%] md:min-w-[900px] flex flex-col md:flex-row"
+                         min-w-[95%] sm:min-w-[85%] md:min-w-[950px] flex flex-col md:flex-row"
             >
-              {/* LEFT — IMAGE BLOCK (Single solid block like reference) */}
-              <div className=" flex flex-col">
-                <div className="relative h-64 md:h-full w-full">
+              {/* LEFT — IMAGE FULL COVER + BOTTOM NAME */}
+              <div className="md:w-1/3 flex flex-col">
+                {/* Image covers full left card area */}
+                <div className="relative w-full h-72 md:h-[320px]">
                   <Image
                     src={doc.image}
                     alt={doc.name}
                     fill
-                    className="object-contain "
+                    className="object-cover"
                   />
                 </div>
 
-                {/* Name + Role inside white bottom block */}
-                <div className="bg-white p-4  text-left">
-                  <h3 className="text-lg font-semibold">{doc.name}</h3>
+                {/* Name + Role at bottom */}
+                <div className="bg-white px-6 py-4 border-t border-border-subtle text-left">
+                  <h3 className="text-lg font-semibold text-slate-900">
+                    {doc.name}
+                  </h3>
                   <p className="text-sm text-muted">{doc.role}</p>
                 </div>
               </div>
@@ -91,7 +130,7 @@ export default function DoctorSection() {
               {/* RIGHT — TEXT BLOCK */}
               <div className="md:w-2/3 p-6 md:p-8 text-left">
                 {doc.bio.map((para, idx) => (
-                  <p key={idx} className="body-md leading-relaxed mb-4">
+                  <p key={idx} className="para mb-4">
                     {idx === 0 ? (
                       <>
                         <strong>{doc.name}</strong>{" "}
@@ -103,7 +142,7 @@ export default function DoctorSection() {
                   </p>
                 ))}
 
-                <p className="body-md leading-relaxed mt-4">
+                <p className="para mt-4">
                   <strong>Experience:</strong>
                   <br />
                   {doc.experience}
@@ -111,17 +150,26 @@ export default function DoctorSection() {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
 
         {/* RIGHT desktop arrow */}
+
         <button
           onClick={() => scroll("right")}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 h-10 w-10 hidden md:flex items-center justify-center
-          bg-white rounded-full shadow-soft hover:bg-primary hover:text-white transition"
+          aria-label="Previous doctor"
+          className="
+    hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20
+    h-12 w-12 rounded-full
+    bg-white text-primary 
+    shadow-xl
+    items-center justify-center
+    transition-all duration-300
+    hover:bg-primary hover:text-white
+  "
         >
-          <FaArrowRight />
+          <FaAngleRight className="h-7 w-7" />
         </button>
       </div>
-    </section>
+    </motion.section>
   );
 }
