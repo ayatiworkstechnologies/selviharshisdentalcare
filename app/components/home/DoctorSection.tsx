@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-
 import { useRef } from "react";
 import { motion } from "framer-motion";
 
@@ -30,24 +29,6 @@ const doctors: Doctor[] = [
   },
 ];
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, x: 40 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 },
-  },
-};
-
 export default function DoctorSection() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -64,10 +45,10 @@ export default function DoctorSection() {
   return (
     <motion.section
       className="page-section"
-      initial="hidden"
-      whileInView="visible"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      variants={sectionVariants}
+      transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       {/* Heading */}
       <div className="page-container text-center mb-10">
@@ -81,14 +62,14 @@ export default function DoctorSection() {
           onClick={() => scroll("left")}
           aria-label="Previous doctor"
           className="
-    hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20
-    h-12 w-12 rounded-full
-    bg-white text-primary 
-    shadow-xl
-    items-center justify-center
-    transition-all duration-300
-    hover:bg-primary hover:text-white
-  "
+            hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20
+            h-12 w-12 rounded-full
+            bg-white text-primary 
+            shadow-xl
+            items-center justify-center
+            transition-all duration-300
+            hover:bg-primary hover:text-white
+          "
         >
           <FaAngleLeft className="h-7 w-7" />
         </button>
@@ -96,7 +77,10 @@ export default function DoctorSection() {
         {/* Slider */}
         <motion.div
           ref={scrollRef}
-          variants={cardVariants}
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 }}
           className="flex overflow-x-auto scroll-smooth gap-8 px-2 pb-6 snap-x scrollbar-none 
                      justify-center md:justify-start"
         >
@@ -108,7 +92,6 @@ export default function DoctorSection() {
             >
               {/* LEFT — IMAGE FULL COVER + BOTTOM NAME */}
               <div className="md:w-1/3 flex flex-col">
-                {/* Image covers full left card area */}
                 <div className="relative w-full h-72 md:h-[320px]">
                   <Image
                     src={doc.image}
@@ -118,7 +101,6 @@ export default function DoctorSection() {
                   />
                 </div>
 
-                {/* Name + Role at bottom */}
                 <div className="bg-white px-6 py-4 border-t border-border-subtle text-left">
                   <h3 className="text-lg font-semibold text-slate-900">
                     {doc.name}
@@ -153,19 +135,18 @@ export default function DoctorSection() {
         </motion.div>
 
         {/* RIGHT desktop arrow */}
-
         <button
           onClick={() => scroll("right")}
-          aria-label="Previous doctor"
+          aria-label="Next doctor"
           className="
-    hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20
-    h-12 w-12 rounded-full
-    bg-white text-primary 
-    shadow-xl
-    items-center justify-center
-    transition-all duration-300
-    hover:bg-primary hover:text-white
-  "
+            hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20
+            h-12 w-12 rounded-full
+            bg-white text-primary 
+            shadow-xl
+            items-center justify-center
+            transition-all duration-300
+            hover:bg-primary hover:text-white
+          "
         >
           <FaAngleRight className="h-7 w-7" />
         </button>
