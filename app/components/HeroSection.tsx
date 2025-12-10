@@ -42,15 +42,19 @@ export function HeroBanner({
 
   return (
     <section
-      className={`relative overflow-hidden ${bgClassName} -mt-20 pt-20 pb-10 md:pt-24 md:pb-16`}
+      className={`
+        relative overflow-hidden ${bgClassName}
+        min-h-screen flex items-start
+        pt-28 pb-16 md:pt-32 md:pb-20
+      `}
     >
       {/* ========== TOP-LEFT TEXT (DESKTOP) ========== */}
-      <div className="absolute left-25 top-10 z-20 hidden md:block max-w-xs">
+      <div className="absolute left-36 top-36 z-20 hidden md:block max-w-xs">
         <motion.p
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
-          className="whitespace-pre-line text-lg font-medium text-white/90"
+          className="whitespace-pre-line text-2xl font-medium text-white/90"
         >
           {sideText}
         </motion.p>
@@ -62,9 +66,9 @@ export function HeroBanner({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="absolute right-25 top-10 z-20 hidden md:block"
+          className="absolute right-36 top-36 z-20 hidden md:block"
         >
-          <div className="relative h-15 w-15 ">
+          <div className="relative h-16 w-16">
             <Image
               src={topRightIconSrc}
               alt={topRightIconAlt}
@@ -76,23 +80,26 @@ export function HeroBanner({
       )}
 
       {/* ========== CENTER BLOCK (TEXT + IMAGE) ========== */}
-      <div className="page-container relative flex flex-col items-center justify-center text-center">
-        {/* CENTER TITLE */}
+      <div className="page-container relative w-full flex flex-col md:mt-15 items-center justify-start text-center">
+        {/* CENTER TITLE OVER IMAGE */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7 }}
           className="
-    pointer-events-none
-    absolute z-10
-    sm:top-1/2 lg:top:90 
-    w-full text-center
-    text-[12vw]         
-    sm:text-[10vw]       
-    md:text-[7vw]        
-    font-secondary font-extrabold uppercase 
-    tracking-[0.18em] leading-none
-  "
+            pointer-events-none
+            absolute inset-x-0
+            top-[76%] -translate-y-1/2
+            z-10 text-center
+            text-8xl
+            // sm:text-4xl
+            // md:text-6xl
+            // lg:text-8xl
+            
+            text-white
+            font-secondary font-extrabold uppercase
+            tracking-[0.18em] leading-none
+          "
         >
           {splitLetters}
         </motion.div>
@@ -102,16 +109,18 @@ export function HeroBanner({
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-0 w-[90%] sm:w-[75%] md:w-[60%]"
+          className="relative z-0  w-full flex justify-center"
         >
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            width={700}
-            height={700}
-            className="mx-auto object-contain"
-            priority
-          />
+          <div className="w-[90%] sm:w-[75%] md:w-[60%]">
+            <Image
+              src={imageSrc}
+              alt={imageAlt}
+              width={700}
+              height={700}
+              className="mx-auto object-contain"
+              priority
+            />
+          </div>
         </motion.div>
 
         {/* MOBILE SIDE TEXT UNDER IMAGE */}
